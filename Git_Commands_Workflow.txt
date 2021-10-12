@@ -1,0 +1,90 @@
+Git & Github: ||
+--------------||
+--------------||
+
+
+First, repo is created in Github and then cloned it to local repository further work in local repo:
+--------------------------------------------------------------------------------------------------
+
+=>	Install Git for Windows
+
+=>	setup SSH on both local machine and Github\
+		ssh-keygen -t rsa -b 4096 -C "lrat@protonmail.com"		{Git Bash}
+
+=>	Create a repository on Github.
+
+=>	Modify git global configuration file
+		git config --global user.email "lrat@protonmail.com"		{Git Bash}
+		git config --global user.name "leninchakr"			{Git Bash}
+
+=>	Create separate directory in local machine to download and work with remote repository
+
+=>	clone a remote repository to local machine using ssh-link.
+		git clone ssh_link						{Git Bash}
+	
+=>	Edit (using Vim editor) or add new files in the local repository
+		vim file_name							{Git Bash}
+	
+=>	Any new file addition or modification on existing file must be stated for commit
+		git add .							{Git Bash}
+	
+=>	After stating all modifie/added files, commit the changes to local repository
+		git commit -m "message" -m "discription"			{Git Bash}
+
+=>	Now push the changes to remote/Github repository
+		git push origin master						{Git Bash}
+			{Here "master" or "main" is same. Check in Git Bash and in Github for name of the main branch.}
+	
+
+	Work_Flow:	{First, repo is created in Github and then clone it to local repository and then start to work further}
+	----------
+
+		git config --global
+			|
+		git clone ssh_link
+			|
+		vim file_name
+			|
+		git add .
+			|
+		git commit -m "message for changes" -m "discription for the changes"
+			|
+		git push origin master/main
+			|
+		make pull request {if local repo user is not authorized to changes in admin's repo}
+		
+============================================================================================================================
+
+First, Create a local Repo and Then set it up in Github:
+-------------------------------------------------------
+
+=>	Create a folder that will act as local repository
+
+=>	Convert this folder into github repository
+		git init
+		
+=>	Create a new repository with same name as created locally
+
+=>	Copy SSH_link from Github and set it as origin for remote
+		git 
+
+=>	Verify the remote referece of the Github repo
+		git remote -v
+		
+
+	Work_Flow:	{First, Create a local Repo and Then set it up in Github and work further in local repo}
+	----------
+	
+		Create a folder with suitable repo name
+			|
+		git init
+			|
+		Create a new repo in remote
+			|
+		Tell local git where to referece during remote push
+			|
+		git remote add origin SSH_link_new_repo_in_Github
+			|
+		git remote -v
+
+============================================================================================================================
