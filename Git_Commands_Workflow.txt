@@ -95,8 +95,22 @@ Branches - Concepts:
 =>	How to find list of branches for a repository & on which branch I am currently on (*)?
 		git branch		{note the star: Current working branch}
 		
-=>	Create new branch
+=>	Create new branch from "main" branch in local machine
 		git checkout -b new_branch_name
+		
+=>	Create new branch from "another feature branch"
+		git checkout -b new_branch_name feature_branch
 		
 =>	Switching between branches
 		git checkout name_of_branch_to_switch_to
+		
+=>	Create a branch in local machine and push it to remote	{first create a branch locally, then push to remote}
+		git checkout -b Local_branch_name
+		git push origin Local_branch_name
+		
+=>	Delete remote branch from local machine, then delete it in local machine too
+		git push origin --delete Branch_Name_In_Remote
+		git branch -d Branch_Name_In_Remote
+		
+=>	Deleting a branch in local machine
+		git branch -d branch_name
