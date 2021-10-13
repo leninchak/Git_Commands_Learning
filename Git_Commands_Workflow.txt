@@ -33,8 +33,8 @@ First, repo is created in Github and then cloned it to local repository further 
 
 =>	Now push the changes to remote/Github repository
 		git push origin master						{Git Bash}
-			{Here "master" or "main" is same. Check in Git Bash and in Github for name of the main branch.}
-	
+			{origin - master/main branch in github. master - local branch, which need to be merged with origin branch}
+				eg:	git push origin local_machine_branch
 
 	Work_Flow:	{First, repo is created in Github and then clone it to local repository and then start to work further}
 	----------
@@ -88,3 +88,15 @@ First, Create a local Repo and Then set it up in Github:
 		git remote -v
 
 ============================================================================================================================
+
+Branches - Concepts:
+--------------------
+
+=>	How to find list of branches for a repository & on which branch I am currently on (*)?
+		git branch		{note the star: Current working branch}
+		
+=>	Create new branch
+		git checkout -b new_branch_name
+		
+=>	Switching between branches
+		git checkout name_of_branch_to_switch_to
