@@ -87,6 +87,12 @@ First, Create a local Repo and Then set it up in Github:
 			|
 		git remote -v
 
+=============================
+For staging & commiting a "modified" {not created} files, run the following commands
+git commit -am "Message"
+
+=============================
+
 ============================================================================================================================
 
 Branches - Concepts:
@@ -114,3 +120,23 @@ Branches - Concepts:
 		
 =>	Deleting a branch in local machine
 		git branch -d branch_name
+		
+===========================================================================================================================
+
+Assume a file is edited in main branch.
+Then, Creating a branch & working on same file name will have different content.
+
+To merge "any edition" in different branch to main branch,
+	Method 1:
+		git checkout main					{Go to main branch}
+		git merge feature_branch			{feature' content is merged with main's branch}
+		git push origin main				{Then push main's branch content to 'origin'}
+	
+	Method 2:
+		go to featur branch
+			git checkout Feature_Branch
+		
+		Then push this whole 'Feature_Branch' to GitHub
+			git push --set-upstream origin Feature_Branch		{a new branch with all changes will be created on remote GitHub}
+				{System will respond how to create a PULL REQUEST + Copy & Paste the link + Work further in GitHub Page}
+				
