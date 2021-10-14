@@ -128,8 +128,8 @@ Then, Creating a branch & working on same file name will have different content.
 
 To merge "any edition" in different branch to main branch,
 	Method 1:
-		git checkout main					{Go to main branch}
-		git merge feature_branch			{feature' content is merged with main's branch}
+		git checkout feature_branch			{stay in feature_branch}
+		git merge main						{feature' content is merged with main's branch}
 		git push origin main				{Then push main's branch content to 'origin'}
 	
 	Method 2:
@@ -140,3 +140,66 @@ To merge "any edition" in different branch to main branch,
 			git push --set-upstream origin Feature_Branch		{a new branch with all changes will be created on remote GitHub}
 				{System will respond how to create a PULL REQUEST + Copy & Paste the link + Work further in GitHub Page}
 				
+===========================================================================================================================
+For new line charecter to be effect, give TWO SPACE CHARACTER at the end of each line
+
+===========================================================================================================================
+whenever we want to commit the changes, ALWAYS go to "distination" branch
+===========================================================================================================================
+Merge Conflict:		Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4
+
+=>	Assume there is a master/main branch of a repository, on which two developers will work with locally, on GitHub
+		Create a Repo line GitHub
+	
+=>	Both developers pulled the master/main branch from GitHub
+		git pull origin main	{Developer_1}
+		git pull origin main	{Developer_2}
+	
+=>	Assume Developer_1 finished the work first and pushed the local repo to Github.
+		"Done all work locally"	{Developer_1}
+		git push origin main
+
+=>	Assume Developer_2 created a feature_branch from local main branch.
+		git checkout -b Feature_Branch	{Developer_2}	{A relation between Main_Branch & Feature_Branch is created!}
+		
+	=>	Here, he modified the file and did commit.
+			vim File_Name
+			git status
+			git add .
+			git commit -m "D"
+			git status			{check it has clean Working Tree!, before MERGING }
+			
+		=>	He want to merge the modification done on feature_branch to local main branch then wanted to push the modified local main repo.
+				git checkout main		{ALWAYS go to "distination" branch}
+			
+			=>	Here main has TWO options
+					1.	Directly merging Feature_Branch with Local Main_Branch
+							
+					2.	Make another PULL from GitHub to get updated files, Then merge Feature_Branch with updated Main_Branch, Then Again PUSH merged files to GitHub.
+							git pull origin main		{Main_Branch Files will be updated, SO the relation between Main_Branch & Feature_Branch is DESTROYED!}
+							git status					{Everything should be OK}
+							git merge Feature_Branch	{If there is any changes on same lines, a conflict will rise!}	{Check CLI carefully "main|MERGING" will be displayed (insted of "main")if there is conflict}
+							
+							vim File_Name				{Resolve the conflict Manually!}
+							git status
+							git add File_Name			{All conflicts will be fixed here. & Add to stage again}
+							git commit -m "Message" -m "Description"	{Now conflicts RESOLVED and procceed to MERGE by "Commit" command. AND "main|MERGING" will changed to "main"}
+							
+							git merge Feature_Branch	{Try again Local merging, If it is successful, it will show up-to-date message}
+							git status					{Make a FINAL status checkup}
+							
+							git push origin main
+							Make PULL REQUEST if needed from above command
+
+=>	NOTE:	No editing/modification is done on any file, while we in "Main_Branch".	Always take a copy of Main_Branch to another Feature_Branch and do all work!!. It is always good practice to NOT Edit directly on Main_Branch	{All work is done LOCALLY}
+==================================================================================================================================
+
+PUSHING Proceduere:
+-------------------
+
+If executing PUSH without executing ADD and COMMIT, the modification done on the file will not be reflected in GitHub.
+
+So always follow the order,
+
+	Order:		STATUS	->	ADD, COMMIT, if required	->	PULL	->	STATUS	->	VIM/MERGE	->	RESOLVE CONFLICT, if any in VIM	->	STATUS	->	ADD	->	COMMIT	->	STATUS	->	PUSH
+==================================================================================================================================
