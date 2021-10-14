@@ -146,10 +146,12 @@ For new line charecter to be effect, give TWO SPACE CHARACTER at the end of each
 ===========================================================================================================================
 whenever we want to commit the changes, ALWAYS go to "distination" branch
 ===========================================================================================================================
+{Owner of GitHub Repo & Local machine Repo are same {Like admin rights}}
+
 Merge Conflict:		Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4
 
 =>	Assume there is a master/main branch of a repository, on which two developers will work with locally, on GitHub
-		Create a Repo line GitHub
+		Create a Repo in GitHub
 	
 =>	Both developers pulled the master/main branch from GitHub
 		git pull origin main	{Developer_1}
@@ -188,7 +190,7 @@ Merge Conflict:		Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4
 							git merge Feature_Branch	{Try again Local merging, If it is successful, it will show up-to-date message}
 							git status					{Make a FINAL status checkup}
 							
-							git push origin main
+							git push origin main		{OR trt this command too. "git push --set-upstream origin main}
 							Make PULL REQUEST if needed from above command
 
 =>	NOTE:	No editing/modification is done on any file, while we in "Main_Branch".	Always take a copy of Main_Branch to another Feature_Branch and do all work!!. It is always good practice to NOT Edit directly on Main_Branch	{All work is done LOCALLY}
@@ -201,5 +203,40 @@ If executing PUSH without executing ADD and COMMIT, the modification done on the
 
 So always follow the order,
 
-	Order:		STATUS	->	ADD, COMMIT, if required	->	PULL	->	STATUS	->	VIM/MERGE	->	RESOLVE CONFLICT, if any in VIM	->	STATUS	->	ADD	->	COMMIT	->	STATUS	->	PUSH
+	Order:		STATUS	->	ADD, COMMIT, if required	->	PULL	->	STATUS	->	VIM/MERGE	->	RESOLVE CONFLICT, if any in VIM	->	STATUS	->	ADD	->	COMMIT	->	STATUS	->	PUSH {To Remote}!
 ==================================================================================================================================
+{Owner of GitHub Repo & Local machine Repo are same {Like admin rights}}
+
+Single developer + Editing Same file on Different Branches Locally + Merging (BY resolving conflict) fea to main_branch + Pushing to Remote:
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+=>	Pull a repo from GitHub to local repo
+		git pull origin main
+
+=>	create a feature_branch of the local's main repo
+		git checkout -b feature_branch
+
+=>	Edit file in local main_branch	+	Status	+	Add 	+	Commit
+		git checkout main
+		vim File_Name		{Editing}
+		git status
+		git add .
+		git commit -m "M"
+		git status			{Everything must be clean}
+		
+=>	Edit file in feature_branch		+	Status	+	Add		+	Commit
+		git checkout feature_branch
+		vim File_Name
+		git status
+		git add .
+		git commit -m "M"
+		git status			{Everything must be clean}
+			
+			=>	Now LINK is broken between Local's main_branch and Local's Feature_Branch
+
+=>	Go to distination branch {main_branch} & Start merging:
+		git checkout main
+		git merge feature_branch	{If there is modification on same line on both breanches, Conflict will rise { "(main|MERGING)" will be created instead of "main"	}
+		Follow the "PUSHING Proceduere"!!!
+==================================================================================================================================
+
