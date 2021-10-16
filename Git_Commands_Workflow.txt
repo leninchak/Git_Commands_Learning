@@ -66,7 +66,7 @@ First, Create a local Repo and Then set it up in Github:
 =>	Create a new repository with same name as created locally
 
 =>	Copy SSH_link from Github and set it as origin for remote
-		git 
+		git remote add origin SSH_Link
 
 =>	Verify the remote referece of the Github repo
 		git remote -v
@@ -240,3 +240,218 @@ Single developer + Editing Same file on Different Branches Locally + Merging (BY
 		Follow the "PUSHING Proceduere"!!!
 ==================================================================================================================================
 
+Concept:	Make pull request|
+------------------------------
+=>	Owner of file is one person.
+
+	=>	As contributor, we wanted modify certain content of the owner's file.
+	
+		=>	So contributor logins into his/her account and search for "OWNER's ORIGINAL REPO" and FORKs it.
+				Search Bar: Author's Repo	+	FORK it!
+					{Once FORK is complete, Follow message will be DISPLAYED forked from "Author/Original_Repo" under Forked_Repo!	}
+				
+			=>	Then contributor clones FORKED REPO from his account as local machine's main branch
+					git clone SSH_Link
+					cd REPO_DIR
+					ls -ls			{Verify it is git directory}
+					git remote -v	{Verify remote link to origin}
+					
+				=>	Create a Feature_Branch of local machine's main branch to work with
+						git checkout -b local_main_copy
+						
+					=>	Fix/Modify the content
+							vim	File_Name		{Work on modification}
+							git add File_Name
+							git commit -m "M"	{Make work tree clean!}
+							git status
+							
+						=>	Push to remote origin from "Feature_Branch"
+								git push --set_upstream origin Feature_Branch		{A new 'Feature_Branch' will be created in GitHub! + A PULL Request POP also will happen!}
+						
+						=>	Work with Pull request POP UP in GitHub
+								Create PULL Request
+									This pull request will be reflected in "Author's Repo Page"
+										Author will login into his/her account accept & merge the request, if he/she want to!
+						
+						=>	Similary multiple contributors might have commited changes to Author's Main Repo.
+						
+							=>	If we want to keep updates of Author's Main Repo, Follow the procedure,
+							
+								=>	We might have already have forked Author's Repo locally. If not, run follwing,
+										git clone SSH_Link_of_Forked_Repo
+									
+									=>	Now add Another Remote-link of Author's Main REPO to local machine
+											git remote add alias_name_Arthor_Repo SSH_Link_Arthor_Repo
+											git remote -v		{Verify both Alias name & its Aurthor's Repo's SSL link}
+											
+										=>	Now we want UPDATE origin (forked link) with CHANGES made in Aurtor's Repo
+												Pull down all changes in Aurthor's Repo
+													git fetch alias_name_Arthor_Repo		{All the changes are listed to include in local machine}
+													
+											=>	Now merge the change from Aurthor's Repo's Main Branch to local machine's local_main_branch
+													git merge alias_name_Arthor_Repo/Branch_Name origin/Local_Main_Branch
+												
+												=>	Now local machine have two 'Main' Branches, while checkout into main branch
+														1.	Main_Branch from Forked_Branch from our account
+														2.	Main_Branch from Aurthor's Repo's Main branch
+														
+															So ALWAYS use full path:	Alias_Name_Repo/main
+															
+																eg:
+																	git checkout alias_name_Arthor_Repo/main	;for checking into Local 'main' branch of Aurthor's Main branch
+																	git checkout alias_Forked_Repo/main			;for checking into local 'main' branch of Forked Repo's Main branch
+												
+												=>	Push the merged content in local's main branch of alian_Forked_Repo to alian_Forked_Repo (origin)
+														git push alian_Forked_Repo alias_Forked_Repo/main
+			How to do it?
+			
+				Key words:		Forking, Contributing, Open source
+					
+					Questions to Ask?	What is fork:	Making replica of a Author's Repo.
+										How to fork:	Search Author's Repo in search bar. Once it is found, click fork button
+
+==================================================================================================================================
+
+Different Developers_Senario:
+----------------------------
+
+Git Learning:
+
+Owner:
+mail: leninchakravarthy89@gmail.com
+pass: Kl17BG8K9
+
+Developer 2: (Local Machine's SSH is Linked)
+main: lrat@protonmail.com
+pass: Kl17BG8K9
+uname: leninchakr2
+
+Developer 1:
+mail: leninchakr@protonmail.com
+pass: Kl17BG8K9
+uname: leninchakr1
+
+=====================================================================================================================================
+
+Fork Syncing:|			{	Ref:	https://www.youtube.com/watch?v=HbSjyU2vf6Y	}
+-------------
+
+=>	Aurthor's Repo is present		{It has only one branch "Main/Master"}
+
+=>	Fork above in GitHub in contributor's login
+
+=>	Clone the FORKED_REPO to contributor's local machine
+		git clone FORKED_REPO_SSH_Link			{This will be Main Branch}
+		
+=>	Either we create a new branch or work with local's Main branch
+	=>	It is always preferred to make a new feature branch to work!
+			git checkout -b Working_Branch
+			
+=>	NOW some other contributor made modifications in Aurthor's Repo/Main
+
+=>	Now we want to sync the changes made in Aurthor's Repo/Main with contributor's FORKED Main branch
+	
+	How:
+		"	We can not directly sync Aurthor's Repo/Main to Contributor's Main Repo through GitHub/Git!	"
+		"	The contributor need to create a local tracking branch that tracks a remote branch!	"
+
+		Set up a tracking branch
+			git checkout -b Remote_Track_Branch
+			
+		Set up remote upstream link to Aurthor's Repo
+			git remote add Remote_Alias_Name Aurthor_Repo_SSH_Link			{	Click "forked from Aurthor_User_Name/Original_Admin_Repo" to find SSL Link}
+				eg:	git remote add upstream Aurthor_Repo_SSH_Link
+			git remote -v		{check if remote repo is linked}
+			git branch			{views local machine branches}
+			git branch -r		{views remote repos & its branches}		{To be analyzed:	Difference between 'git branch' vs 'git branch -r'}
+			
+		Now fetch changes in Aurthor's Repo		{ALL Code modifications + ALL bFile addtion/deletion + ALL Added/Deleted branches}
+			git fetch upstream				
+					{	To be analyzed:		git fetch <remote-repo> <remote-branch>:<local-branch>	}
+					{	Analyzed:			git fetch upstream main	}	{	This will fetch only one branch "main/master".	Not all branches	}
+				if we want to fetch specific branch of Aurthor's Repo,
+					git fetch upstream Specific_Branch
+			
+			git branch -r	{Verify Aurthor's Repo with its branches are listed}
+			
+		DO NOT checkout into upstream/main now
+			"git checkout Upstream_Main_Branch" will through "Detached Head" Error!!!!!!!
+		
+		First Decide which upstream's branch the contributor wants to work with. {	Required_Branch:	is it 'main' or 'some_feature_branch'?	}
+			Merge only that branch!!!!!					[Very important]
+			
+			First merge the upstream/Required_Branch with Remote_Track_Branch
+				git merge upstream/Required_Branch Remote_Track_Branch		{commit is not needed}
+			
+				Enter commit message in the editor, save and exit	{But commit message must to given}
+			
+				cat Sample_File		{to cross check remote's changes locally}
+					
+		Now Merge the Remote_Track_Branch with local Main branch
+			git status
+			
+			git checkout main		{ Goto Destination Branch for merging	}
+			git merge Remote_Track_Branch
+
+				if there is conflict, resolve
+				
+			git merge Remote_Track_Branch		{check for upto date message}
+		
+		Then push the local Main branch to Contributor's Github
+			git push origin main
+			
+		Verify in GitHub
+		
+=>	If there is another modifications in Aurthor's Repo, to sync again,		{Any deletion in GitHub will not be reflected in local machine. So manually delete}
+		Delete all upstream branches
+			git branch -r -d all_upstream_branch
+			
+		Pull upstream
+			git pull upstream			{to looks for :ALL Code modifications + ALL File addtion/deletion + ALL Added branches}
+				git pull upstream Required_Branch	{only look for : ALL Code modifications + ALL File addtion/deletion}
+		
+		Switch to Remote_Track_Branch (goto destination branch) to sync!
+			git checkout Remote_Track_Branch
+			
+		Then Merge the upstream/Required_Branch with Remote_Track_Branch
+			git merge upstream/Required_Branch Remote_Track_Branch
+			
+			look for conflict. If it is any resolve it!
+			
+			git merge again!
+		
+		Check sample files
+			cat Sample_File
+			
+		git status
+			
+=>	Now merge synced Remote_Track_Branch with Local_Main branch
+		git checkout main
+		git merge Remote_Track_Branch main
+			
+			look for conflict. If it is any resolve it!
+			
+			git merge again!
+			
+=>	Push to contributor's remote Github
+		git push origin main
+
+=================================================================================================================================================
+
+Reset all commits till beginning of cloning of a repository:
+
+	git branch -D branch_name
+	git reset --hard origin/main
+	
+=================================================================================================================================================
+
+How to delete last commit?
+
+
+=================================================================================================================================================
+
+How to abort the merge?
+
+	git merge --abort
+	
+=================================================================================================================================================
