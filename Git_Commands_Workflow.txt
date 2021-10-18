@@ -1,174 +1,194 @@
-Git & Github: ||
---------------||
---------------||
+										||	Clean_Up of Git Work Flow	||  
+											==========================  
+  
+Note:	All commands are executed in 'Git Bash' in corresponding folders.  
 
-
-First, repo is created in Github and then cloned it to local repository further work in local repo:
---------------------------------------------------------------------------------------------------
-
-=>	Install Git for Windows
-
-=>	setup SSH on both local machine and Github\
-		ssh-keygen -t rsa -b 4096 -C "lrat@protonmail.com"		{Git Bash}
-
-=>	Create a repository on Github.
-
-=>	Modify git global configuration file
-		git config --global user.email "lrat@protonmail.com"		{Git Bash}
-		git config --global user.name "leninchakr"			{Git Bash}
-
-=>	Create separate directory in local machine to download and work with remote repository
-
-=>	clone a remote repository to local machine using ssh-link.
-		git clone ssh_link						{Git Bash}
+Chapter 1:	First, Creating Repo in Github + Second, Clone to Local machine:  
+----------------------------------------------------------------------------  
+  
+	=>	Install Git for Windows.		(	Ref:	https://git-scm.com/downloads	)  
+  
+	=>	setup SSH on Both Local machine and Github		{	Ref:	Search for 'git ssh key windows' in YT	}  
+			Create SSH Public & Private Keys in local machine.  
+				ssh-keygen -t rsa -b 4096 -C "lrat@protonmail.com"		{	Git Bash (Run as Admin) from start menu	}  
+			Copy Content of Public-key to GitHub Account  
+  
+	=>	Create a repository on Github.  
+  
+	=>	Modify 'git global configuration file' with GitHub Details.  
+			git config --global user.email "lrat@protonmail.com"  
+			git config --global user.name "leninchakr"  
+  
+	=>	Create separate directory to act as "Local Repository Hub" to clone and work with ALL remote repositories.  
+			mkdir Local_Repo_Hub		{At desired location}  
+  
+	=>	clone the remote repository to local machine using ssh-link.  
+			cd Local_Repo_Hub  
+			git clone ssh_link  
+			cd Repo_Name  
+  
+	=>	By defalult, user will be 'master/main' branch.  
+  
+	=>	Modify (using Vim editor) or Add new files in the local repository if necessory.  
+			vim file_name  
+  
+	=>	Any 'file addition'/'modification on existing file' must be STAGED for commit.  
+			git add .	{	Pusing changes to STAGE AREA	}  
+  
+	=>	After stating all modification, COMMIT (Saving) the changes to local repository.  
+			git commit -m "message" -m "discription"  
+  
+	=>	Now push the commited changes to remote/Github repository.  
+			git push origin master  
+				{	origin - Alias to GitHub Repo Location.	}  
+				{	master - local branch, which need to be merged with origin's default branch.}  
+				eg:	git push origin local_machine_branch  
+  
+	Work_Flow:  
+	----------  
+  
+		git config --global  
+			|  
+		git clone ssh_link  
+			|  
+		vim file_name  
+			|  
+		git add .  
+			|  
+		git commit -m "message for changes" -m "discription for the changes"  
+			|  
+		git push origin master/main  
+			|  
+		make pull request {if local repo user is not authorized to changes in admin's repo}  
+  
+======================================================================================================  
+  
+Chapter 2:	First, Create a local Repo + Second, then set it up in Github:  
+-------------------------------------------------------------------------    
+  
+	=>	Create a folder within 'Local Repository Hub' folder to act as local repository.  
+  
+	=>	Convert this folder into github repository.  
+			git init  
+  
+	=>	Create a new repository in GitHub website with same name as created locally.  
+  
+	=>	Copy SSH_link from Github and set it as origin for GitHub.  
+			git remote add origin SSH_Link  
+  
+	=>	Verify the remote referece of the Github repo  
+			git remote -v  
+  
+	Work_Flow:	{First, initialize a local Repo and Then set it up in Github}  
+	----------  
+  
+		Create a folder with suitable repo name  
+			|  
+		git init  
+			|  
+		Create a new repo in remote/GitHub  
+			|  
+		Tell local git where to referece during remote push  
+			|  
+		git remote add origin SSH_link_new_repo_in_Github  
+			|  
+		git remote -v  
+  
+======================================================================================================  
+=>	For STAGE-ing & COMMIT-ing a "modified" {not created} files with single command.  
+		git commit -am "Message"  
 	
-=>	Edit (using Vim editor) or add new files in the local repository
-		vim file_name							{Git Bash}
+=>	Always go to the DESTINATION Branch:
+		whenever we want to commit the changes/ merge, ALWAYS go to "distination" branch  
 	
-=>	Any new file addition or modification on existing file must be stated for commit
-		git add .							{Git Bash}
+=>	NOTE:
+		-	No editing/modification is done on any file, while we in "Main_Branch".
+		-	Always take a copy of Main_Branch to another Feature_Branch and do all work!!. 
+		-	It is always good practice to NOT Edit directly on Main_Branch	{All work is done LOCALLY}
+
+=>	To remove a upstream_repo_link from remote list,
+		git remote rm upstream			{upstream - Alias of a remote branch}
+======================================================================================================  
+  
+Chapter 3:	Branches - Concepts:  
+-------------------------------  
+  
+	=>	How to find list of branches for a (local) repository & on which branch I am currently on (*)?
+			git branch		{note the star: Current working branch}  
+  
+	=>	Create new branch from "main" branch in local machine.  
+			git checkout -b new_branch_name  
+  
+	=>	Create new branch from "Another feature branch"
+			git checkout -b New_branch_name Feature_branch  
+  
+	=>	Switching between branches.  
+			git checkout name_of_branch_to_switch_to  
+  
+	=>	Create a branch in local machine and push it to remote.	{first create a branch locally, then push to remote}  
+			git checkout -b Local_branch_name	{	Go to destination branch	}  
+			git push origin Local_branch_name  
+  
+	=>	Delete a remote branch from local machine, then delete it in local machine too.  
+			git push origin --delete Branch_Name_In_Remote  
+			git branch -d Branch_Name_In_Remote  
+  
+	=>	Deleting a branch in local machine.  
+			git branch -d branch_name	{	This works only after successful merge	}  
+  
+======================================================================================================  
+  
+Chapter 4:	 Working on local feature branch and pushing to remote origin  
+-------------------------------------------------------------------------  
+  
+	=>	Assume a file is edited in main branch.
+  
+	=>	Then, Create a Feature_Branch & Work on the SAME file to alter the content.  
+  
+	=>	To merge "any modification" in Feature_Branch to main branch  
+			Method 1:  
+				git checkout main			{ Goto Destination Branch for merging	}  
+				git merge Feature_Branch	{feature' content is merged with main's branch}  
+				git push origin main		{Then push main's branch content to 'origin'}  
+  
+			Method 2:  
+				go to Feature_Branch  
+					git checkout Feature_Branch  
+  
+				Then push this whole 'Feature_Branch' to GitHub remote  
+					git push --set-upstream origin Feature_Branch  
+						=>	a NEW_Branch with SAME NAME with all changes will be created on remote GitHub  
+						=>	PULL REQUEST Pop-up will be shown to MERGE NEW_Branch with MAIN_Branch  
+								=>	After merge, GitHub will suggest to delte the NEW_Branch  
+  
+						{System will respond how to create a PULL REQUEST + Copy & Paste the link + Work further in GitHub Page}  
+  
+===========================================================================================================================  
+
+Chapter 5:	Merge Conflict - A Concept			{	Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4	}
+--------------------------------------
+
+	Asumption:		{	Owner of GitHub Repo & Developer_2 Local machine Repo are same {Like admin rights}	}
+
+	=>	Assume there is a repository, on which two developers wants to work with, on GitHub
 	
-=>	After stating all modifie/added files, commit the changes to local repository
-		git commit -m "message" -m "discription"			{Git Bash}
-
-=>	Now push the changes to remote/Github repository
-		git push origin master						{Git Bash}
-			{origin - master/main branch in github. master - local branch, which need to be merged with origin branch}
-				eg:	git push origin local_machine_branch
-
-	Work_Flow:	{First, repo is created in Github and then clone it to local repository and then start to work further}
-	----------
-
-		git config --global
-			|
-		git clone ssh_link
-			|
-		vim file_name
-			|
-		git add .
-			|
-		git commit -m "message for changes" -m "discription for the changes"
-			|
-		git push origin master/main
-			|
-		make pull request {if local repo user is not authorized to changes in admin's repo}
-		
-============================================================================================================================
-
-First, Create a local Repo and Then set it up in Github:
--------------------------------------------------------
-
-=>	Create a folder that will act as local repository
-
-=>	Convert this folder into github repository
-		git init
-		
-=>	Create a new repository with same name as created locally
-
-=>	Copy SSH_link from Github and set it as origin for remote
-		git remote add origin SSH_Link
-
-=>	Verify the remote referece of the Github repo
-		git remote -v
-		
-
-	Work_Flow:	{First, Create a local Repo and Then set it up in Github and work further in local repo}
-	----------
+	=>	Both developers pulled the remote repo from GitHub to their local machine
+			git pull origin main	{By Developer_1}	{	By FORK	}
+			git pull origin main	{By Developer_2}
 	
-		Create a folder with suitable repo name
-			|
-		git init
-			|
-		Create a new repo in remote
-			|
-		Tell local git where to referece during remote push
-			|
-		git remote add origin SSH_link_new_repo_in_Github
-			|
-		git remote -v
+	=>	Assume Developer_1 finished the work first and pushed his local repo to Github.
+			"Do all works locally"	{By Developer_1}
+			git push origin main	{By Developer_1}
 
-=============================
-For staging & commiting a "modified" {not created} files, run the following commands
-git commit -am "Message"
-
-=============================
-
-============================================================================================================================
-
-Branches - Concepts:
---------------------
-
-=>	How to find list of branches for a repository & on which branch I am currently on (*)?
-		git branch		{note the star: Current working branch}
-		
-=>	Create new branch from "main" branch in local machine
-		git checkout -b new_branch_name
-		
-=>	Create new branch from "another feature branch"
-		git checkout -b new_branch_name feature_branch
-		
-=>	Switching between branches
-		git checkout name_of_branch_to_switch_to
-		
-=>	Create a branch in local machine and push it to remote	{first create a branch locally, then push to remote}
-		git checkout -b Local_branch_name
-		git push origin Local_branch_name
-		
-=>	Delete remote branch from local machine, then delete it in local machine too
-		git push origin --delete Branch_Name_In_Remote
-		git branch -d Branch_Name_In_Remote
-		
-=>	Deleting a branch in local machine
-		git branch -d branch_name
-		
-===========================================================================================================================
-
-Assume a file is edited in main branch.
-Then, Creating a branch & working on same file name will have different content.
-
-To merge "any edition" in different branch to main branch,
-	Method 1:
-		git checkout main					{ Goto Destination Branch for merging	}
-		git merge feature_branch			{feature' content is merged with main's branch}
-		git push origin main				{Then push main's branch content to 'origin'}
-	
-	Method 2:
-		go to featur branch
-			git checkout Feature_Branch
-		
-		Then push this whole 'Feature_Branch' to GitHub
-			git push --set-upstream origin Feature_Branch		{a new branch with all changes will be created on remote GitHub}
-				{System will respond how to create a PULL REQUEST + Copy & Paste the link + Work further in GitHub Page}
-				
-===========================================================================================================================
-For new line charecter to be effect, give TWO SPACE CHARACTER at the end of each line
-
-===========================================================================================================================
-whenever we want to commit the changes, ALWAYS go to "distination" branch
-===========================================================================================================================
-{Owner of GitHub Repo & Local machine Repo are same {Like admin rights}}
-
-Merge Conflict:		Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4
-
-=>	Assume there is a master/main branch of a repository, on which two developers will work with locally, on GitHub
-		Create a Repo in GitHub
-	
-=>	Both developers pulled the master/main branch from GitHub
-		git pull origin main	{Developer_1}
-		git pull origin main	{Developer_2}
-	
-=>	Assume Developer_1 finished the work first and pushed the local repo to Github.
-		"Done all work locally"	{Developer_1}
-		git push origin main
-
-=>	Assume Developer_2 created a feature_branch from local main branch.
-		git checkout -b Feature_Branch	{Developer_2}	{A relation between Main_Branch & Feature_Branch is created!}
+	=>	Assume Developer_2 created a feature_branch from local main branch to work with {As a good practice}
+			git checkout -b Feature_Branch	{Developer_2}	
+				{A relation between Main_Branch & Feature_Branch is created!}
 		
 	=>	Here, he modified the file and did commit.
 			vim File_Name
 			git status
 			git add .
-			git commit -m "D"
+			git commit -m "Title"
 			git status			{check it has clean Working Tree!, before MERGING }
 			
 		=>	He want to merge the modification done on feature_branch to local main branch then wanted to push the modified local main repo.
@@ -176,16 +196,24 @@ Merge Conflict:		Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4
 			
 			=>	Here main has TWO options
 					1.	Directly merging Feature_Branch with Local Main_Branch
+							NOTE:	At preset state, local MAIN_Branch doesn't has changed made by Developer_1
+						Then pushing to remote
 							
 					2.	Make another PULL from GitHub to get updated files, Then merge Feature_Branch with updated Main_Branch, Then Again PUSH merged files to GitHub.
-							git pull origin main		{Main_Branch Files will be updated, SO the relation between Main_Branch & Feature_Branch is DESTROYED!}
+							git pull origin main
+								{	-	Main_Branch Files will be updated to GitHub Repo.
+									-	SO the relation between Main_Branch & Feature_Branch is DESTROYED!
+								}
 							git status					{Everything should be OK}
 							git merge Feature_Branch	{If there is any changes on same lines, a conflict will rise!}	{Check CLI carefully "main|MERGING" will be displayed (insted of "main")if there is conflict}
 							
-							vim File_Name				{Resolve the conflict Manually!}
+							vim File_Name + SAVE the fiele		{Resolve the conflict Manually!}
 							git status
-							git add File_Name			{All conflicts will be fixed here. & Add to stage again}
-							git commit -m "Message" -m "Description"	{Now conflicts RESOLVED and procceed to MERGE by "Commit" command. AND "main|MERGING" will changed to "main"}
+							git add File_Name	
+								{	=>	Now conflicts RESOLVED and procceed to MERGE by "Commit" command. AND "main|MERGING" will changed to "main"
+									=>	All conflicts will be fixed here.
+								}
+							git commit -m "Message" -m "Description"
 							
 							git merge Feature_Branch	{Try again Local merging, If it is successful, it will show up-to-date message}
 							git status					{Make a FINAL status checkup}
@@ -193,39 +221,39 @@ Merge Conflict:		Ref:	https://www.youtube.com/watch?v=nDRWhKc5Yd4
 							git push origin main		{OR trt this command too. "git push --set-upstream origin main}
 							Make PULL REQUEST if needed from above command
 
-=>	NOTE:	No editing/modification is done on any file, while we in "Main_Branch".	Always take a copy of Main_Branch to another Feature_Branch and do all work!!. It is always good practice to NOT Edit directly on Main_Branch	{All work is done LOCALLY}
 ==================================================================================================================================
 
-PUSHING Proceduere:
--------------------
+Chapter 6:	PUSHING Proceduere
+------------------------------
 
-If executing PUSH without executing ADD and COMMIT, the modification done on the file will not be reflected in GitHub.
+=>	If executing PUSH without executing ADD and COMMIT, the modification done on the file will not be reflected in GitHub.
 
-So always follow the order,
-
-	Order:		STATUS	->	ADD, COMMIT, if required	->	PULL	->	STATUS	->	VIM/MERGE	->	RESOLVE CONFLICT, if any in VIM	->	STATUS	->	ADD	->	COMMIT	->	STATUS	->	PUSH {To Remote}!
+=>	So always follow the order,
+		Order:		
+		STATUS	->	ADD, COMMIT, if required	->	PULL	->	STATUS	->	VIM/MERGE	->	RESOLVE CONFLICT, if any in VIM	->	STATUS	->	ADD	->	COMMIT	->	STATUS	->	PUSH {To Remote}!
 ==================================================================================================================================
-{Owner of GitHub Repo & Local machine Repo are same {Like admin rights}}
 
-Single developer + Editing Same file on Different Branches Locally + Merging (BY resolving conflict) fea to main_branch + Pushing to Remote:
---------------------------------------------------------------------------------------------------------------------------------------------
+Chapter 7:	Single Developer + Editing SAME file in DIFFERENT branches + Finally Mergin into LOCAL main branch + Pushing to Remote:
+-----------------------------------------------------------------------------------------------------------------------------------
 
-=>	Pull a repo from GitHub to local repo
+	Assumption:	Owner of GitHub Repo & Local machine Repo are same {Like admin rights}
+
+=>	Pull a repo from GitHub to local machine
 		git pull origin main
 
-=>	create a feature_branch of the local's main repo
-		git checkout -b feature_branch
+=>	create a Feature_Branch from the local's main branch
+		git checkout -b Feature_Branch
 
-=>	Edit file in local main_branch	+	Status	+	Add 	+	Commit
-		git checkout main
+=>	Edit file in local MAIN_Branch
+		git checkout main					{GENERALLY WE WONT EDIT MAIN BRANCH FILES IN LOCAL REPO.	BUT PULL, before MERGING, from REMOTE is VERY COMMON}
 		vim File_Name		{Editing}
 		git status
 		git add .
 		git commit -m "M"
 		git status			{Everything must be clean}
 		
-=>	Edit file in feature_branch		+	Status	+	Add		+	Commit
-		git checkout feature_branch
+=>	Edit file in Feature_Branch
+		git checkout Feature_Branch
 		vim File_Name
 		git status
 		git add .
@@ -236,60 +264,61 @@ Single developer + Editing Same file on Different Branches Locally + Merging (BY
 
 =>	Go to distination branch {main_branch} & Start merging:
 		git checkout main
-		git merge feature_branch	{If there is modification on same line on both breanches, Conflict will rise { "(main|MERGING)" will be created instead of "main"	}
+		git merge Feature_Branch	
+			{
+				If there is modification on same line on both breanches, 
+				Conflict will rise { "(main|MERGING)" will be created instead of "main"	in Git Bash
+			}
 		Follow the "PUSHING Proceduere"!!!
-==================================================================================================================================
-
-To remove a upstream_repo_link from remote list,
-
-	git remote rm upstream			{upstream - Alias of a remote branch}
-
 
 ==================================================================================================================================
 
-Concept:	Make pull request|
-------------------------------
-=>	Owner of file is one person.
+Chapter 7:	FORK & Make Pull Request - A Concept
+------------------------------------------------
 
-	=>	As contributor, we wanted modify certain content of the owner's file.
+=>	Owner of Repo is one person (Aurthor).
+
+=>	As a contributor, we wanted contribute few contents to the Owner's Repo.
 	
-		=>	So contributor logins into his/her account and search for "OWNER's ORIGINAL REPO" and FORKs it.
-				Search Bar: Author's Repo	+	FORK it!
-					{Once FORK is complete, Follow message will be DISPLAYED forked from "Author/Original_Repo" under Forked_Repo!	}
+	=>	So contributor logins into his/her account and search for "OWNER's ORIGINAL REPO" and "FORK" it.
+			Search Bar: Author's Repo	+	FORK it!
+				{Once FORK is complete, Follow message will be DISPLAYED "forked from "Author/Original_Repo" under Forked_Repo!	}
 				
-			=>	Then contributor clones FORKED REPO from his account as local machine's main branch
-					git clone SSH_Link
-					cd REPO_DIR
-					ls -ls			{Verify it is git directory}
-					git remote -v	{Verify remote link to origin}
+		=>	Then contributor clones the FORKED Repo from his account to local machine
+				git clone Forked_Repo_SSH_Link
+				cd REPO_DIR
+				ls -ls			{Verify it is git directory}
+				git remote -v	{Verify remote link to origin}
 					
-				=>	Create a Feature_Branch of local machine's main branch to work with
-						git checkout -b local_main_copy
-						
-					=>	Fix/Modify the content
-							vim	File_Name		{Work on modification}
-							git add File_Name
-							git commit -m "M"	{Make work tree clean!}
-							git status
+		=>	Create a Feature_Branch of local machine's main branch to work with
+				git checkout -b local_main_copy
+				vim	File_Name		{	Contribution	}
+				git add .
+				git commit -m "M"	{Make work tree clean!}
+				git status
 							
-						=>	Push to remote origin from "Feature_Branch"
-								git push --set_upstream origin Feature_Branch		{A new 'Feature_Branch' will be created in GitHub! + A PULL Request POP also will happen!}
+		=>	Push to remote origin from "Feature_Branch"
+				git push --set_upstream origin Feature_Branch
+					{
+						A new 'Feature_Branch' will be created in GitHub!
+						A PULL Request POP also will happen!
+					}
 						
-						=>	Work with Pull request POP UP in GitHub
-								Create PULL Request
-									This pull request will be reflected in "Author's Repo Page"
-										Author will login into his/her account accept & merge the request, if he/she want to!
+				=>	Work with Pull request that POPPED UP in GitHub
+						Create PULL Request		{Pull Request: Feature_Branch	->	Owner's Repo}
+						This pull request will be reflected in "Author's Repo Page"
+							Author will login into his/her account accept & merge the request, if he/she want to!
 						
-						=>	Similary multiple contributors might have commited changes to Author's Main Repo.
+		=>	Similary multiple contributors might have commited changes to Author's Main Repo.
 						
-							=>	If we want to keep updates of Author's Main Repo, Follow the procedure,
+		=>	If we want to keep updates of Author's Main Repo, Follow the procedure,
 							
-								=>	We might have already have forked Author's Repo locally. If not, run follwing,
-										git clone SSH_Link_of_Forked_Repo
+			=>	We might have already have forked Author's Repo locally. If not, run follwing,
+					git clone SSH_Link_of_Forked_Repo
 									
-									=>	Now add Another Remote-link of Author's Main REPO to local machine
-											git remote add alias_name_Arthor_Repo SSH_Link_Arthor_Repo
-											git remote -v		{Verify both Alias name & its Aurthor's Repo's SSL link}
+			=>	Now add REMOTE_LINK to Author's Main REPO to local repo
+					git remote add ALIAS_Author_Repo SSH_Link_Arthor_Repo
+					git remote -v		{Verify both Alias name & its Aurthor's Repo's SSL link are present}
 											
 										=>	Now we want UPDATE origin (forked link) with CHANGES made in Aurtor's Repo
 												Pull down all changes in Aurthor's Repo
@@ -452,15 +481,6 @@ Reset all commits till beginning of cloning of a repository:
 	
 =================================================================================================================================================
 
-How to delete last commit?
-
-	git reset --hard HEAD~1
-	
-How to Move the HEAD to spefic commit and ignore remaing SUCCESSION commits
-
-	git reset --hard COMMIT_ID			{Play with this!}
-=================================================================================================================================================
-
 How to abort the merge?
 
 	git merge --abort
@@ -549,3 +569,76 @@ Finding:
 					3.	Same line modification on "BOTH Branches"					:	YES conflict		Explore further@@
 ===========================================================================================================================
 
+"TWO References" Approach in Branching:
+		
+			1.	Branch REF:	(a pointer)
+					-	Always stays at LAST commit of THAT branch
+					-	CAN NOT be moved by any commands
+				
+			2.	HEAD REF:	(a pointer)
+					-	Usaully stays at LAST commit of THAT Branch		{HEAD REF = Branch_REF}
+					-	But CAN to moved to any branch/specific_commit_IDs
+
+===========================================================================================================================
+
+What is HEAD in git?	{	Ref:	https://git-school.github.io/visualizing-git/	{'clear' will reset whole visuvalization page}	}
+		
+		HEAD 	- 	A variable for referencing to a commit
+				-	A Pointer!	{	To last commit/new checkout	}
+				-	Always must point to LAST commit of RECENT checkout branch!!!
+						{	It is possible to move the HEAD to one of SPECIFIC PREVIOUS commit.	Now this HEAD position is called "DETACHED HEAD!"	}
+		
+		When we checkout to a branch, the HEAD will be attached to THAT branch
+			From that branch,
+				For EACH commit, the variale HEAD will move with each commit and ALWAYS POINTS to LAST commit!		
+		
+		When HEAD moves:
+			1.	git commit			{when we make a commit}
+			2.	git checkout		{when we checkout to a branch}
+			
+		What is DETACHED HEAD!?
+			When CURRENT HEAD is NOT at,
+				1.	LAST commit of RECENT checkout branch
+				2.	RECENT chekcout branch	{when no commit is made}
+			
+		Syntax:
+			@Initial commit, HEAD points 'master' branch.									{HEAD: master}
+			
+			git checkout Branch_Name		=>	Moves the HEAD to LAST commit of RECENT checkout branch		{HEAD: F1}
+			git checkout SOME_COMMIT_ID		=>	Pushes the HEAD to mentioned SOME_COMMIT_ID commit			{HEAD:	DETACHED HEAD!}
+				If, only if, we create a NEW branch at DETACHED HEAD commit, then {HEAD: NEW_Branch}
+				
+		What to do when HEAD is DETACHED?
+			Simple checkout to any required branch!
+				Now HEAD will points to LAST commit of THAT branch
+				
+===========================================================================================================================
+=================================================================================================================================================
+
+How to delete last commit?
+
+	git reset --hard HEAD~1
+	
+How to Move the HEAD to spefic commit and ignore remaing SUCCESSION commits
+
+	git reset --hard COMMIT_ID			{Play with this!}
+=================================================================================================================================================
+
+Reset Vs Checkout:
+
+		Assumption:	We want to ignore/delete the changes {use --hard flag with reset}
+		
+		git checkout SOME_COMMIT_ID
+ 		
+			=>	Move 'HEAD REF' pointer to desired commit_ID
+			=>	This will not AFFECT the position of 'BRANCH REF' pointer
+			=>	We can place HEAD REF pointer to forwared/backward commits
+			
+		git reset --hard SOME_COMMIT_ID
+		
+			=>	Moves BOTH 'HEAD REF' & 'BRANCH REF' to desired commit_ID
+			=>	Once we moved both 'HEAD REF' & 'BRANCH REF' to any previous commits,
+				=>	We can move HEAD REF to forward commits
+				=>	But we CAN NOT move BRANCH REF to any forward commits
+
+=================================================================================================================================================
