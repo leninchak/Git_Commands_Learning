@@ -128,8 +128,8 @@ Then, Creating a branch & working on same file name will have different content.
 
 To merge "any edition" in different branch to main branch,
 	Method 1:
-		git checkout feature_branch			{stay in feature_branch}
-		git merge main						{feature' content is merged with main's branch}
+		git checkout main					{ Goto Destination Branch for merging	}
+		git merge feature_branch			{feature' content is merged with main's branch}
 		git push origin main				{Then push main's branch content to 'origin'}
 	
 	Method 2:
@@ -240,6 +240,13 @@ Single developer + Editing Same file on Different Branches Locally + Merging (BY
 		Follow the "PUSHING Proceduere"!!!
 ==================================================================================================================================
 
+To remove a upstream_repo_link from remote list,
+
+	git remote rm upstream			{upstream - Alias of a remote branch}
+
+
+==================================================================================================================================
+
 Concept:	Make pull request|
 ------------------------------
 =>	Owner of file is one person.
@@ -302,7 +309,7 @@ Concept:	Make pull request|
 																	git checkout alias_Forked_Repo/main			;for checking into local 'main' branch of Forked Repo's Main branch
 												
 												=>	Push the merged content in local's main branch of alian_Forked_Repo to alian_Forked_Repo (origin)
-														git push alian_Forked_Repo alias_Forked_Repo/main
+														git push alias_Forked_Repo alias_Forked_Repo/main
 			How to do it?
 			
 				Key words:		Forking, Contributing, Open source
@@ -447,7 +454,11 @@ Reset all commits till beginning of cloning of a repository:
 
 How to delete last commit?
 
+	git reset --hard HEAD~1
+	
+How to Move the HEAD to spefic commit and ignore remaing SUCCESSION commits
 
+	git reset --hard COMMIT_ID			{Play with this!}
 =================================================================================================================================================
 
 How to abort the merge?
@@ -455,3 +466,86 @@ How to abort the merge?
 	git merge --abort
 	
 =================================================================================================================================================
+
+Playing with Merge Conflicts:
+-----------------------------
+
+	There is repo in GitHub
+	
+	Simply clone to local main branch
+	
+	Create 2 new branches
+	
+	checkout to Main
+		Do changee on same file + same line
+		Commit
+	
+	checkout to Branch_1
+		Do changee on same file + same line
+		Commit
+		
+	checkout to Branch_2
+		Do changee on same file + same line
+		Commit
+		
+	Task:	Merging Branch_1 -> Main
+		Result:	Merge Conflict Occurs
+		Abort Merge
+		
+	Task:	Merging Branch_2 -> Main
+		Result:	Merge Conflict Occurs
+		Abort Merge
+	
+	Task:	Merging Branch_2 -> Branch_1
+		Result:	Merge Conflict Occurs
+		Abort Merge
+		
+						==================================================================================
+
+	There is repo in GitHub
+	
+	Simply clone to local main branch
+	
+	Create 2 new branches
+	
+	{		checkout to Main							{	Skip this step!	}
+				Do changee on same file + same line
+				Commit
+	}
+	
+	checkout to Branch_1							
+		Do changee on same file + same line
+		Commit
+		
+	checkout to Branch_2
+		Do changee on same file + same line
+		Commit
+		
+	Task:	Merging Branch_1 -> Main
+		Result:	No Merge Conflict!					Since Last Pull, Same file + Same location: No modification => INCOMING Changes will be accepted!
+			Git accepted INCOMING changes TOO!
+		
+	Task:	Merging Branch_2 -> Main
+		Result:	Merge Conflict Occurs
+		Abort Merge
+	
+	Task:	Merging Branch_2 -> Branch_1
+		Result:	Merge Conflict Occurs
+		Abort Merge
+		
+		
+Finding:
+
+		Adding NEW empty line
+		Adding string at NEW line
+		
+			Both will not cause Merge ConflictS
+			
+				Only SAME LINE modification (on BOTH branches) will create conflicts!!!!!!!!!!!!!					HARD FINDING!!!!!!!!!!!!
+				
+				Possibilities tried:
+					1.	Adding empty NEW line character	(on SINGLE branch File)		:	NO conflict`
+					2.	Adding new entrys into a NEW line (on SINGLE branch File)	:	No conflict
+					3.	Same line modification on "BOTH Branches"					:	YES conflict		Explore further@@
+===========================================================================================================================
+
